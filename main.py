@@ -44,7 +44,6 @@ def win_or_lose(board, player_choice, player_index):
     return win
 
 
-
 def pvp():
     board = return_board()
     player_choice = input('Player-1, choose O or X: ').upper()
@@ -76,6 +75,7 @@ def pvp():
             print("It's a tie!")
             break
 
+
 def is_winner(board, player):
     win_condn = [[0, 1, 2], [3, 4, 5], [6, 7, 8],  # Horizontal wins
                  [0, 3, 6], [1, 4, 7], [2, 5, 8],  # Vertical wins
@@ -84,6 +84,7 @@ def is_winner(board, player):
         if board[i[0]] == board[i[1]] == board[i[2]] == player:
             return True
     return False
+
 
 def is_draw(board):
     return '-' not in board
@@ -114,7 +115,9 @@ def minimax(board, depth, maximizing_player):
                 board[i] = '-'
                 min_eval = min(min_eval, eval)
         return min_eval
-def nextMove(board):
+
+
+def next_move(board):
     best_move = -1
     best_score = -float('inf')
     for i in range(len(board)):
@@ -140,7 +143,27 @@ def pve():
 
     current_player = 1
     while True:
-        if current_player == 1
+        if current_player == 1:
+            print("Player-1's turn")
+            player_index = player_input(board, p1)
+            if win_or_lose(board, p1, player_index):
+                print("Player-1 wins!")
+                break
+            current_player = 2
+        else:
+            print("Player-2's turn")
+            player_index = next_move(board)
+            board[player_index] = p2
+            create_board(board)
+            if win_or_lose(board, p2, player_index):
+                print("Player-2 wins!")
+                break
+            current_player = 1
+
+        if '-' not in board:
+            print("It's a tie!")
+            break
+
 
 def main():
     print("Welcome to Tic Tac Toe!")
@@ -151,6 +174,9 @@ def main():
     mode = int(input())
     if mode == 1:
         pvp()
+    if mode == 2:
+        pve()
 
 
-main()
+if __name__ == '__main__':
+    main()
