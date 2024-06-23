@@ -1,6 +1,3 @@
-import random
-
-
 def print_board(board):
     """Prints the current state of the board."""
     for row in board:
@@ -34,15 +31,15 @@ def available_moves(board):
     return moves
 
 def is_draw(board):
-    return '-' not in board
+    return all(cell != ' ' for row in board for cell in row)
 
 
 def minimax(board, depth, maximizing_player):
     if check_win(board, 'X'):
         return 1
-    elif not check_win(board, 'O'):
+    elif check_win(board, 'O'):
         return -1
-    elif is_draw(board) or depth == 0:
+    elif is_draw(board):
         return 0
 
     moves = available_moves(board)
@@ -51,20 +48,30 @@ def minimax(board, depth, maximizing_player):
         best_score = -float('inf')
         for move in moves:
             board[move[0]][move[1]] = 'X'
-            score = minimax(board, depth - 1, False)
+            score = minimax(board, depth + 1, False)
             board[move[0]][move[1]] = ' '
             best_score = max(best_score, score)
-
         return best_score
     else:
         least_score = float('inf')
         for move in moves:
             board[move[0]][move[1]] = 'O'
-            score = minimax(board, depth - 1, True)
+            score = minimax(board, depth + 1, True)
             board[move[0]][move[1]] = ' '
             least_score = min(least_score, score)
 
         return least_score
+def best_move(board):
+    best_score = -float('inf')
+    move = None
+    for m in available_moves(board):
+        board[m[0]][m[1]] = 'O'
+        score = minimax(board, 0, False)
+        board[m[0]][m[1]] = ' '
+        if score > best_score:
+            best_score = score
+            move = m
+    return move
 def main():
     """Main function to play the game."""
     board = [[' ' for _ in range(3)] for _ in range(3)]
@@ -83,7 +90,7 @@ def main():
                 continue
         else:
             # AI's move (replace this with your Minimax algorithm implementation)
-            ai_move = random.choice(available_moves(board))
+            ai_move = best_move(board)
             board[ai_move[0]][ai_move[1]] = 'X'
             current_player = 'O'
 
