@@ -11,28 +11,68 @@ def return_board():
            '-', '-', '-']
     return row
 
-def player_input(board):
-    player1_choice = input('O or X: ').lower()
-    if player1_choice != 'o' and player1_choice != 'x':
-        print('Please enter either o or x')
-        player_input(board)
-    player1_index = int(input("Enter a number from 1 to 9: "))
-    player1_index -= 1
-    board[player1_index] = player1_choice.upper()
-    # create_board(board)
-    # player2_choice = input('O or X: ').lower()
-    # player2_index = int(input("Enter a number from 1 to 9: "))
-    # player2_index -= 1
-    # board[player2_index] = player2_choice
+
+def player_input(board, player_choice):
+    player_index = int(input("Enter a number from 1 to 9: "))
+    if board[player_index] == player_choice:
+        print(f"{player_choice} is already marked!")
+        player_input(board, player_choice)
+    player_index -= 1
+    win = False
+    win_condn = []
+    for i in range(0, 9):
+        if i == player_index:
+            if i % 3 == 0:
+                if board[i+1] == player_choice and board[i+2] == player_choice:
+                    win = True
+                elif board[i+3]
+    if player_index == 0:
+        if board[1] == player_choice and board[2] == player_choice:
+            win = True
+        elif board[4] == player_choice and board[8] == player_choice:
+            win = True
+        elif board[3] == player_choice and board[6] == player_choice:
+            win = True
+    elif player_index == 1:
+        if board[0] == player_choice and board[2] == player_choice:
+            win = True
+        elif board[4] == player_choice and board[7] == player_choice:
+            win = True
+    elif player_index == 2:
+        if board[1] == player_choice and board[0] == player_choice:
+            win = True
+        elif board[5] == player_choice and board[8] == player_choice:
+            win = True
+        elif board[4] == player_choice and board[6] == player_choice:
+            win = True
+    board[player_index] = player_choice.upper()
     create_board(board)
+
+
 def pvp():
     board = return_board()
     run = True
     while run:
-        player_input(board)
+        player_turn(board)
 
-def win_or_lose():
-    
+
+def player_turn(board):
+    player_choice = input('O or X: ').lower()
+    if player_choice != 'o' and player_choice != 'x':
+        print('Please enter either o or x')
+        board = return_board()
+        player_turn(board)
+    p1 = player_choice
+    if player_choice == 'o':
+        p2 = 'X'
+    else:
+        p2 = 'O'
+    print("Player-1")
+    player_input(board, p1)
+    print("Player-2")
+    player_input(board, p2)
+
+
 def main():
     print("Welcome to Tic Tac Toe!")
     print("What mode would you like to play?:")
